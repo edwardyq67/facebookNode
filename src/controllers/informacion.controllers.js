@@ -1,8 +1,13 @@
 const catchError = require('../utils/catchError');
 const InformacionImg = require('../models/InformacionImg');
-
+const {Op}=require('sequelize')
 const getAll = catchError(async(req, res) => {
-    const results = await InformacionImg.findAll();
+    const {imagen,posicion,color}=req.query
+    const where={}
+    if(color)where.color={[Op.iLike]:`%${color}%`}
+    const results = await InformacionImg.findAll({
+        where
+    });
     return res.json(results);
 });
 
